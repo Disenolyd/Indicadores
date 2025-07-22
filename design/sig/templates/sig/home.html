@@ -1079,14 +1079,7 @@
         }
 
         // ... existing code ...
-        // --- Asegurar que los submenús se desplieguen correctamente ---
-        document.querySelectorAll('.menu > li > button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.submenu').forEach(sub => sub.classList.remove('active'));
-                const submenu = this.parentElement.querySelector('.submenu');
-                if (submenu) submenu.classList.toggle('active');
-            });
-        });
+        // Menu handler moved to DOMContentLoaded event
         // ... existing code ...
 
         // ... existing code ...
@@ -4960,5 +4953,53 @@
         <button id="btnTrimestral" class="btn btn-pdf" style="display:none;" onclick="mostrarReporteTrimestral(submenuActual)">Ver trimestral</button>
         <button id="btnSemestral" class="btn btn-pdf" style="display:none;" onclick="mostrarReporteSemestral(submenuActual)">Ver semestral</button>
     </div>
+
+    <script>
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Iniciando aplicación...');
+            
+            // Asegurar que los menús principales funcionen correctamente
+            document.querySelectorAll('.menu > li > button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Menú clickeado:', this.textContent);
+                    
+                    // Remover clase activa de todos los menús principales
+                    document.querySelectorAll('.menu > li > button').forEach(b => b.classList.remove('active'));
+                    // Agregar clase activa al menú clickeado
+                    this.classList.add('active');
+                    
+                    // Ocultar todos los submenús
+                    document.querySelectorAll('.submenu').forEach(sub => sub.classList.remove('active'));
+                    
+                    // Mostrar el submenú correspondiente
+                    const submenu = this.parentElement.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.classList.add('active');
+                        console.log('Submenú mostrado:', submenu.id);
+                    }
+                });
+            });
+            
+            // Mostrar automáticamente el primer submenú (TIC) y su primer indicador
+            const firstMenuButton = document.querySelector('.menu > li > button');
+            const firstSubmenu = document.querySelector('.submenu');
+            const firstSubmenuButton = document.querySelector('.submenu li button');
+            
+            if (firstMenuButton && firstSubmenu && firstSubmenuButton) {
+                // Activar el primer menú principal
+                firstMenuButton.classList.add('active');
+                firstSubmenu.classList.add('active');
+                
+                // Mostrar el primer indicador
+                setTimeout(() => {
+                    firstSubmenuButton.click();
+                    console.log('Primer indicador cargado automáticamente');
+                }, 100);
+            }
+            
+            console.log('Aplicación iniciada correctamente');
+        });
+    </script>
 </body>
 </html>
