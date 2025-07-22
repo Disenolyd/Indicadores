@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Indicadores TIC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #005a87;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Prueba de Funcionalidad - Sistema de Indicadores</h1>
+        
+        <h2>Estado del Sistema</h2>
+        <div id="status">Verificando...</div>
+        
+        <h2>Pruebas de API</h2>
+        <button class="test-button" onclick="testAPI('tic1')">Probar API TIC1</button>
+        <button class="test-button" onclick="testAPI('tic2')">Probar API TIC2</button>
+        <button class="test-button" onclick="testAPI('operaciones1')">Probar API Operaciones1</button>
+        
+        <div id="api-results"></div>
+        
+        <h2>Enlaces Directos</h2>
+        <p><a href="http://localhost:8000/login/" target="_blank">🔐 Página de Login</a></p>
+        <p><a href="http://localhost:8000/home/" target="_blank">🏠 Dashboard Principal</a></p>
+        <p><a href="http://localhost:8000/api/indicadores/tic1/" target="_blank">📊 API TIC1</a></p>
+        
+        <h2>Credenciales de Prueba</h2>
+        <div class="result">
+            <strong>Email:</strong> vamos.design@gmail.com<br>
+            <strong>Password:</strong> test123
+        </div>
+        
+        <h2>Instrucciones</h2>
+        <ol>
+            <li>Haz clic en "Página de Login" para abrir la aplicación</li>
+            <li>Usa las credenciales de arriba para iniciar sesión</li>
+            <li>Verifica que se muestren los menús laterales</li>
+            <li>Haz clic en diferentes indicadores para ver tablas y gráficas</li>
+            <li>Si no se muestra contenido, revisa la consola del navegador</li>
+        </ol>
+    </div>
+
+    <script>
+        // Verificar estado del servidor
+        function checkServerStatus() {
+            fetch('http://localhost:8000/')
+                .then(response => {
+                    document.getElementById('status').innerHTML = 
+                        '<div class="result success">✅ Servidor Django funcionando correctamente</div>';
+                })
+                .catch(error => {
+                    document.getElementById('status').innerHTML = 
+                        '<div class="result error">❌ Error: El servidor Django no está funcionando</div>';
+                });
+        }
+
+        // Probar API
+        function testAPI(endpoint) {
+            const resultDiv = document.getElementById('api-results');
+            resultDiv.innerHTML += `<div>Probando ${endpoint}...</div>`;
+            
+            fetch(`http://localhost:8000/api/indicadores/${endpoint}/`)
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.innerHTML += `
+                        <div class="result success">
+                            ✅ ${endpoint}: ${data.data ? data.data.length : 0} registros encontrados
+                        </div>`;
+                })
+                .catch(error => {
+                    resultDiv.innerHTML += `
+                        <div class="result error">
+                            ❌ ${endpoint}: Error - ${error.message}
+                        </div>`;
+                });
+        }
+
+        // Verificar al cargar la página
+        window.onload = function() {
+            checkServerStatus();
+        };
+    </script>
+</body>
+</html>
