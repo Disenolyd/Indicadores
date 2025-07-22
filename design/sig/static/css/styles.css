@@ -1,0 +1,169 @@
+body {
+    background: #f4f6fa;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #222;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #003366;
+    margin-top: 0;
+}
+
+.btn, .btn-pdf {
+    background: #003366;
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn:hover, .btn-pdf:hover {
+    background: #336699;
+}
+
+input[type="text"], input[type="password"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #b0b8c1;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+label {
+    color: #003366;
+    font-weight: bold;
+}
+
+/* --- Tablas modernas estilo dashboard (forzado) --- */
+.table-container table,
+table.submenu-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background: #fff !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+    margin-bottom: 30px !important;
+}
+.table-container th, .table-container td,
+table.submenu-table th, table.submenu-table td {
+    border: none !important;
+    padding: 16px 14px !important;
+    text-align: center !important;
+    font-size: 16px !important;
+    transition: background 0.2s, color 0.2s !important;
+}
+.table-container th, table.submenu-table th {
+    background: #e6ecf5 !important;
+    color: #003366 !important;
+    font-weight: bold !important;
+    font-size: 17px !important;
+    letter-spacing: 0.5px !important;
+}
+.table-container tr, table.submenu-table tr {
+    border-bottom: 1.5px solid #e6ecf5 !important;
+}
+.table-container tr:last-child, table.submenu-table tr:last-child {
+    border-bottom: none !important;
+}
+.table-container tbody tr:nth-child(even), table.submenu-table tbody tr:nth-child(even) {
+    background: #f4f6fa !important;
+}
+.table-container tbody tr:hover, table.submenu-table tbody tr:hover {
+    background: #e6ecf5 !important;
+}
+.table-container td.meta-incumplida, table.submenu-table td.meta-incumplida {
+    background: #ffeded !important;
+    color: #b30000 !important;
+    font-weight: bold !important;
+    border-radius: 8px !important;
+}
+.table-container th:first-child, .table-container td:first-child,
+table.submenu-table th:first-child, table.submenu-table td:first-child {
+    border-top-left-radius: 18px !important;
+}
+.table-container th:last-child, .table-container td:last-child,
+table.submenu-table th:last-child, table.submenu-table td:last-child {
+    border-top-right-radius: 18px !important;
+}
+
+.sidebar {
+    background: #003366;
+    color: #fff;
+}
+.sidebar h3 {
+    color: #b0b8c1;
+}
+.menu > li > button, .submenu li button {
+    background: #003366;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.menu > li > button:hover, .submenu li button:hover {
+    background: #336699;
+}
+
+.chart-container, .table-container, .login-container, .logout-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.07);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 90px;
+}
+
+.allowed-emails {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.logout {
+    color: #fff;
+    text-decoration: underline;
+    font-size: 15px;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.grafica-indicador {
+    min-width: 320px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.grafica-indicador canvas {
+    width: 240px !important;
+    height: 240px !important;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    display: block;
+}
+.grafica-indicador .meta-texto {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 10px;
+    align-self: flex-start;
+}
