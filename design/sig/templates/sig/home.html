@@ -482,7 +482,13 @@
         let submenuActual = null;
 
         function showSection(sectionId) {
-            console.log('Mostrando sección:', sectionId);
+            console.log('🔍 Mostrando sección:', sectionId);
+            
+            // Verificar que sectionId no esté vacío
+            if (!sectionId) {
+                console.error('❌ Error: sectionId está vacío');
+                return;
+            }
             
             // Ocultar todas las secciones
             document.querySelectorAll('.section-content').forEach(function(div) {
@@ -493,9 +499,12 @@
             var section = document.getElementById('section-' + sectionId);
             if (section) {
                 section.style.display = 'block';
-                console.log('Sección mostrada:', section.id);
+                console.log('✅ Sección mostrada correctamente:', section.id);
             } else {
-                console.error('No se encontró la sección:', 'section-' + sectionId);
+                console.error('❌ No se encontró la sección:', 'section-' + sectionId);
+                // Mostrar todas las secciones disponibles para debug
+                const todasLasSecciones = document.querySelectorAll('.section-content');
+                console.log('📋 Secciones disponibles:', Array.from(todasLasSecciones).map(s => s.id));
                 return;
             }
             
@@ -507,16 +516,16 @@
                 'tic2': 'Copias de seguridad',
                 'tic3': 'Incidentes de seguridad informática',
                 'tic4': 'Cumplimiento en el programa de mantenimiento de TICs',
-                'operaciones1': 'Subutilización espacio de bodega',
-                'operaciones2': 'Inspecciones de vehículos sin novedad',
-                'operaciones3': 'No retorno de documentos',
-                'operaciones4': 'Cumplimiento de entrega de mercancía',
-                'operaciones5': 'Servicios fuera de la programación',
-                'operaciones6': 'Vehículos con fallas mecánicas',
-                'operaciones7': 'Arqueo a conductores',
-                'operaciones8': 'Servicios prestados en flota propia',
-                'operaciones9': 'Mantenimientos preventivos',
-                'operaciones10': 'Atención de novedades',
+                'operaciones1': 'Posiciones no utilizadas',
+                'operaciones2': 'Despachos sin novedad',
+                'operaciones3': 'No retorno',
+                'operaciones4': 'Entregados a tiempo',
+                'operaciones5': 'Vehículos fuera de programación',
+                'operaciones6': 'Vehículos con fallas',
+                'operaciones7': 'Mantenimientos preventivos',
+                'operaciones8': 'Mantenimientos correctivos',
+                'operaciones9': 'Ausentismo por causa médica',
+                'operaciones10': 'Reportes supervisor',
                 'financieros1': 'Ejecución Presupuestal',
                 'financieros2': 'Confiabilidad asociado de negocio-proveedor',
                 'financieros3': 'Reevaluación de proveedores',
@@ -5139,14 +5148,46 @@
     </div>
 
     <script>
+        // Función para validar que todas las secciones del menú existan
+        function validarSecciones() {
+            console.log('🔍 Validando secciones...');
+            const botonesMenu = document.querySelectorAll('button[onclick^="showSection"]');
+            const seccionesFaltantes = [];
+            
+            botonesMenu.forEach(boton => {
+                const onclick = boton.getAttribute('onclick');
+                const match = onclick.match(/showSection\('([^']+)'\)/);
+                if (match) {
+                    const sectionId = match[1];
+                    const section = document.getElementById('section-' + sectionId);
+                    if (!section) {
+                        seccionesFaltantes.push(sectionId);
+                    }
+                }
+            });
+            
+            if (seccionesFaltantes.length > 0) {
+                console.error('❌ Secciones faltantes:', seccionesFaltantes);
+            } else {
+                console.log('✅ Todas las secciones del menú están presentes');
+            }
+            
+            // Mostrar todas las secciones disponibles
+            const seccionesDisponibles = Array.from(document.querySelectorAll('.section-content')).map(s => s.id);
+            console.log('📋 Secciones disponibles:', seccionesDisponibles);
+        }
+
         // Inicialización cuando el DOM está listo
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Iniciando aplicación...');
+            console.log('🚀 Iniciando aplicación...');
+            
+            // Validar secciones primero
+            validarSecciones();
             
             // Asegurar que los menús principales funcionen correctamente
             document.querySelectorAll('.menu > li > button').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    console.log('Menú clickeado:', this.textContent);
+                    console.log('🎯 Menú clickeado:', this.textContent);
                     
                     // Remover clase activa de todos los menús principales
                     document.querySelectorAll('.menu > li > button').forEach(b => b.classList.remove('active'));
@@ -5160,7 +5201,7 @@
                     const submenu = this.parentElement.querySelector('.submenu');
                     if (submenu) {
                         submenu.classList.add('active');
-                        console.log('Submenú mostrado:', submenu.id);
+                        console.log('📂 Submenú mostrado:', submenu.id);
                     }
                 });
             });
@@ -5178,11 +5219,37 @@
                 // Mostrar el primer indicador
                 setTimeout(() => {
                     firstSubmenuButton.click();
-                    console.log('Primer indicador cargado automáticamente');
+                    console.log('🎯 Primer indicador cargado automáticamente');
                 }, 100);
             }
             
-            console.log('Aplicación iniciada correctamente');
+            // Agregar manejadores de click más robustos para los botones de submenú
+            document.querySelectorAll('button[onclick^="showSection"]').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    // Extraer el ID de la sección del onclick
+                    const onclick = this.getAttribute('onclick');
+                    const match = onclick.match(/showSection\('([^']+)'\)/);
+                    
+                    if (match) {
+                        const sectionId = match[1];
+                        console.log('🔗 Botón clickeado para sección:', sectionId);
+                        
+                        // Llamar a showSection directamente
+                        try {
+                            showSection(sectionId);
+                        } catch (error) {
+                            console.error('❌ Error al mostrar sección:', error);
+                        }
+                    } else {
+                        console.error('❌ No se pudo extraer sectionId del onclick:', onclick);
+                    }
+                });
+            });
+            
+            console.log('✅ Aplicación iniciada correctamente');
         });
     </script>
 </body>
