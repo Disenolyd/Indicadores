@@ -5206,7 +5206,36 @@
                 });
             });
             
-            // Mostrar automáticamente el primer submenú (TIC) y su primer indicador
+            // Agregar manejadores de click más robustos para los botones de submenú
+            // PRIMERO configuramos los event handlers, LUEGO activamos el primer menú
+            document.querySelectorAll('button[onclick^="showSection"]').forEach(button => {
+                // Remover el onclick original para evitar conflictos
+                const onclick = button.getAttribute('onclick');
+                const match = onclick.match(/showSection\('([^']+)'\)/);
+                
+                if (match) {
+                    const sectionId = match[1];
+                    
+                    // Remover el onclick original
+                    button.removeAttribute('onclick');
+                    
+                    // Agregar nuestro propio event handler
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        
+                        console.log('🔗 Botón clickeado para sección:', sectionId);
+                        
+                        try {
+                            showSection(sectionId);
+                        } catch (error) {
+                            console.error('❌ Error al mostrar sección:', error);
+                        }
+                    });
+                }
+            });
+            
+            // AHORA mostrar automáticamente el primer submenú (TIC) y su primer indicador
             const firstMenuButton = document.querySelector('.menu > li > button');
             const firstSubmenu = document.querySelector('.submenu');
             const firstSubmenuButton = document.querySelector('.submenu li button');
@@ -5216,38 +5245,12 @@
                 firstMenuButton.classList.add('active');
                 firstSubmenu.classList.add('active');
                 
-                // Mostrar el primer indicador
+                // Mostrar el primer indicador directamente sin click
                 setTimeout(() => {
-                    firstSubmenuButton.click();
-                    console.log('🎯 Primer indicador cargado automáticamente');
+                    console.log('🎯 Cargando primer indicador automáticamente');
+                    showSection('tic1'); // Llamar directamente en lugar de hacer click
                 }, 100);
             }
-            
-            // Agregar manejadores de click más robustos para los botones de submenú
-            document.querySelectorAll('button[onclick^="showSection"]').forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    
-                    // Extraer el ID de la sección del onclick
-                    const onclick = this.getAttribute('onclick');
-                    const match = onclick.match(/showSection\('([^']+)'\)/);
-                    
-                    if (match) {
-                        const sectionId = match[1];
-                        console.log('🔗 Botón clickeado para sección:', sectionId);
-                        
-                        // Llamar a showSection directamente
-                        try {
-                            showSection(sectionId);
-                        } catch (error) {
-                            console.error('❌ Error al mostrar sección:', error);
-                        }
-                    } else {
-                        console.error('❌ No se pudo extraer sectionId del onclick:', onclick);
-                    }
-                });
-            });
             
             console.log('✅ Aplicación iniciada correctamente');
         });
